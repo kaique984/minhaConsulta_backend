@@ -21,3 +21,24 @@ exports.createConsultation = (req, res) => {
     }
   );
 };
+
+const db = require('../db/database'); // Supondo que esse arquivo gerencia a conexão com o banco de dados
+
+// Função para buscar consultas do banco de dados
+exports.getConsultasPorUsuario = async (req, res) => {
+    const user = req.user; // Supondo que você pega o usuário autenticado a partir do token
+
+    try {
+        let consultas;
+        if (user.role === 'admin') {
+            // Se for admin, retorna todas as consultas
+            consultas = await db.all('SELECT * FROM consultas');
+        } else {
+            // Se for um usuário normal, retorna apenas as consultas do próprio usuário
+            consultas = await db.all('SELECT * FROM consultas WHERE usuario_id = ?', [user.id]);
+        }
+        res.status(200).json(consultas);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar consultas', error });
+    }
+};

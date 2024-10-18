@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const consultationsController = require('../controllers/ConsultationsController');
+const authMiddleware = require('../routes/auth'); // Middleware de autenticação
 
-// Rota para obter todas as consultas
-router.get('/consultations', consultationsController.getConsultations);
-
-// Rota para criar uma nova consulta
-router.post('/consultations', consultationsController.createConsultation);
+// Rota para buscar consultas
+router.get('/consultas', authMiddleware, consultationsController.getConsultasPorUsuario);
 
 module.exports = router;

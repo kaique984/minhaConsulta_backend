@@ -1,20 +1,14 @@
 const express = require('express');
-const cors = require('cors');
-const authRoutes = require('./routes/auth');
-const consultationsRoute = require('./routes/ConsultationsRoute');
-
 const app = express();
-const PORT = 3000;
+const consultationsRoute = require('./controllers/ConsultationsRoute');
 
-app.use(cors());
+// Middleware para JSON
 app.use(express.json());
 
-// Usar as rotas de autenticação
-app.use('/api/auth', authRoutes);
-
-// Usar a rota de consultas
+// Rotas
 app.use('/api', consultationsRoute);
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
